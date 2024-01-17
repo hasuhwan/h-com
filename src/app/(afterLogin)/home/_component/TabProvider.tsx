@@ -13,7 +13,6 @@ export default function TabProvider({
   children: React.ReactNode;
 }) {
   const [tab, setTab] = useState("rec");
-  console.log(tab);
   return (
     <Tabcontext.Provider value={{ tab, setTab }}>
       {children}

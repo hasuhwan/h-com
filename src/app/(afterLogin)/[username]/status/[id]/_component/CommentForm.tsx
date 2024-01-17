@@ -1,29 +1,20 @@
 "use client";
 
-import { ChangeEventHandler, FormEventHandler, useRef, useState } from "react";
-import styles from "./postForm.module.css";
 import Image from "next/image";
-
-export default function PostForm() {
-  const imageRef = useRef<HTMLInputElement>(null);
+import styles from "./commentForm.module.css";
+import { useState, useRef } from "react";
+export default function CommentForm() {
   const [content, setContent] = useState("");
-  const me = {
-    id: "zerohch0",
-    image: "/hasuhwan.jpeg",
-  };
-
-  const onChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
-    setContent(e.target.value);
-  };
-
-  const onSubmit: FormEventHandler = (e) => {
-    e.preventDefault();
-  };
-
+  const imageRef = useRef<HTMLInputElement>(null);
   const onClickButton = () => {
     imageRef.current?.click();
   };
-
+  const onSubmit = () => {};
+  const onChange = () => {};
+  const me = {
+    id: "hasuhwan",
+    image: "/hasuhwan.jpeg",
+  };
   return (
     <form className={styles.postForm} onSubmit={onSubmit}>
       <div className={styles.postUserSection}>
@@ -35,7 +26,7 @@ export default function PostForm() {
         <textarea
           value={content}
           onChange={onChange}
-          placeholder="무슨 일이 일어나고 있나요?"
+          placeholder="답글 게시하기"
         />
         <div className={styles.postButtonSection}>
           <div className={styles.footerButtons}>
@@ -60,7 +51,7 @@ export default function PostForm() {
               </button>
             </div>
             <button className={styles.actionButton} disabled={!content}>
-              게시하기
+              답글
             </button>
           </div>
         </div>

@@ -6,11 +6,14 @@ import Link from "next/link";
 import Image from "next/image";
 import ActionButtons from "./ActionButtons";
 import PostArticle from "./PostArticle";
-
+import PostImages from "./PostImages";
+import { faker } from "@faker-js/faker";
 dayjs.locale("ko");
 dayjs.extend(relativeTime);
-
-export default function Post() {
+type Props = {
+  noImage?: boolean;
+};
+export default function Post({ noImage }: Props) {
   const target = {
     postId: 1,
     User: {
@@ -20,8 +23,13 @@ export default function Post() {
     },
     content: "클론코딩 더미데이터 체험하기",
     createdAt: new Date(),
-    Images: [],
+    Images: [] as any[],
   };
+  if (Math.random() > 0.5 && !noImage) {
+    target.Images.push({ imageId: 1, link: faker.image.urlLoremFlickr() });
+    target.Images.push({ imageId: 2, link: faker.image.urlLoremFlickr() });
+    target.Images.push({ imageId: 3, link: faker.image.urlLoremFlickr() });
+  }
   return (
     <PostArticle post={target}>
       <div className={styles.postWrapper}>
@@ -52,12 +60,8 @@ export default function Post() {
             </span>
           </div>
           <div>{target.content}</div>
-          <div className={styles.postImageSection}>
-            {/* {target.Images.length > 0 && (
-              <div className={styles.postImageSection}>
-                <Image src={target.Images[0]?.link} alt="" />
-              </div>
-            )} */}
+          <div>
+            <PostImages post={target} />
           </div>
           <ActionButtons />
         </div>

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import styles from "./layout.module.css";
 import Link from "next/link";
-import zLogo from "@/../public/zlogo.png";
+import hLogo from "@/../public/hlogo.png";
 import NavMenu from "./_component/NavMenu";
 import LogoutButton from "./_component/LogoutButton";
 import TrendSection from "./_component/TrendSection";
@@ -9,6 +9,7 @@ import FollowRecommend from "./_component/FollowRecommend";
 import RightSearchZone from "./_component/RightSearchZone";
 import { auth } from "@/auth";
 import RQProvider from "./_component/RQProvider";
+import FollowRecommendSection from "./_component/FollowRecommendSection";
 export default async function AfterLoginLayout({
   children,
   modal,
@@ -24,7 +25,7 @@ export default async function AfterLoginLayout({
           <div className={styles.leftSectionFixed}>
             <Link href={session?.user ? "/home" : "/"} className={styles.logo}>
               <div className={styles.logoPill}>
-                <Image src={zLogo} alt="h.com로고" width={40} height={40} />
+                <Image src={hLogo} alt="h.com로고" width={30} height={30} />
               </div>
             </Link>
             {session?.user && (
@@ -61,9 +62,7 @@ export default async function AfterLoginLayout({
               <TrendSection />
               <div className={styles.followRecommend}>
                 <h3>팔로우 추천</h3>
-                <FollowRecommend />
-                <FollowRecommend />
-                <FollowRecommend />
+                <FollowRecommendSection />
               </div>
             </section>
           </div>

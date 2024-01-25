@@ -1,14 +1,14 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import getPostRecommends from "../_lib/getPostRecommends";
 import Post from "../../_component/Post";
 import { Ipost } from "@/model/post";
+import getFollowingPosts from "../_lib/getFollwingPosts";
 
-export default function PostRecommends() {
+export default function FollowingPosts() {
   const { data } = useQuery<Ipost[]>({
-    queryKey: ["posts", "recommends"],
-    queryFn: getPostRecommends,
+    queryKey: ["posts", "followings"],
+    queryFn: getFollowingPosts,
     staleTime: 60 * 1000, //fresh stale time
     gcTime: 300 * 1000,
   });

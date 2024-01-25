@@ -1,16 +1,21 @@
 "use client";
 
+import { Tabcontext } from "./TabProvider";
 import styles from "./tab.module.css";
-import { useState, useCallback } from "react";
+import { useCallback, useContext } from "react";
+
 export default function Tab() {
-  const [tab, setTab] = useState("rec");
-  const onClickTab = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const target = e.target as HTMLDivElement;
-    const name = target.dataset.name;
-    if (name) {
-      setTab(name);
-    }
-  }, []);
+  const { tab, setTab } = useContext(Tabcontext);
+  const onClickTab = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      const target = e.target as HTMLDivElement;
+      const name = target.dataset.name;
+      if (name === "rec" || name === "fol") {
+        setTab(name);
+      }
+    },
+    [setTab]
+  );
   return (
     <div className={styles.homeFixed}>
       <div className={styles.homeText}>홈</div>

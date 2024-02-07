@@ -1,13 +1,32 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import styles from "./rightSearchZone.module.css";
 import SearchForm from "./SearchForm";
+import { useEffect, useState } from "react";
 
 export default function RightSearchZone() {
+  const router = useRouter();
   const pathname = usePathname();
-  const onChangeAll = () => {};
-  const onChangeFollow = () => {};
+  const searchParams = useSearchParams();
+  const [isFollowChecked, setIsFollowChecked] = useState(false);
+  const onChangeFollow = () => {
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set("pf", "on");
+    setIsFollowChecked(true);
+    router.replace(`/search?${newSearchParams.toString()}`);
+  };
+  const onChangeAll = () => {
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.delete("pf");
+    setIsFollowChecked(false);
+    router.replace(`/search?${newSearchParams.toString()}`);
+  };
+  useEffect(() => {
+    if (searchParams.has("pf")) {
+      setIsFollowChecked(true);
+    }
+  }, [searchParams]);
   if (pathname === "/explore") {
     return null;
   }
@@ -23,13 +42,18 @@ export default function RightSearchZone() {
               <input
                 type="radio"
                 name="pf"
-                defaultChecked
+                checked={!isFollowChecked}
                 onChange={onChangeAll}
               />
             </div>
             <div className={styles.radio}>
               <div>내가 팔로우하는 사람들</div>
-              <input type="radio" name="pf" onChange={onChangeFollow} />
+              <input
+                type="radio"
+                name="pf"
+                onChange={onChangeFollow}
+                checked={isFollowChecked}
+              />
             </div>
           </div>
         </div>

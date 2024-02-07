@@ -1,4 +1,5 @@
 .main {
+  padding-top: 53px;
   width: 600px;
   border-color: rgb(239, 243, 244);
   border-right-width: 1px;
@@ -11,6 +12,7 @@
 }
 
 .header {
+  top: 0;
   display: flex;
   width: inherit;
   height: 53px;

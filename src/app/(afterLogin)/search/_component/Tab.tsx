@@ -15,9 +15,13 @@ export default function Tab() {
       if (name) {
         setTab(name);
         if (name === "hot") {
-          router.replace(`/search?q=${searchParams.get("q")}`);
+          const newSearchParams = new URLSearchParams(searchParams);
+          newSearchParams.delete("f");
+          router.replace(`/search?${newSearchParams.toString()}`);
         } else if (name === "new") {
-          router.replace(`/search?${searchParams.toString()}&f=live`);
+          const newSearchParams = new URLSearchParams(searchParams);
+          newSearchParams.set("f", "live");
+          router.replace(`/search?${newSearchParams.toString()}`);
         }
       }
     },

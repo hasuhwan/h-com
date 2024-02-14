@@ -49,7 +49,7 @@ export const handlers = [
     });
   }),
   http.get("/api/postRecommends", async ({ request }) => {
-    await delay(3000);
+    await delay(2000);
     const url = new URL(request.url);
     const cursor = parseInt(url.searchParams.get("cursor") as string) || 0;
     return HttpResponse.json([
@@ -103,7 +103,7 @@ export const handlers = [
     ]);
   }),
   http.get("/api/followingPosts", async ({ request }) => {
-    await delay(3000);
+    await delay(2000);
     return HttpResponse.json([
       {
         postId: 1,

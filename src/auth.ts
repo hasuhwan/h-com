@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
+import cookie from "cookie";
+import { cookies } from "next/headers";
 export const {
   handlers: { GET, POST },
   auth,
@@ -24,7 +25,11 @@ export const {
             password: credentials.password,
           }),
         });
-
+        const setCookie = authResponse.headers.get("Set-Cookie");
+        if (setCookie) {
+          const parsed = cookie.parse(setCookie);
+          cookies().set("connect.sid", parsed["connect.sid"], parsed);
+        }
         if (!authResponse.ok) {
           return null;
         }

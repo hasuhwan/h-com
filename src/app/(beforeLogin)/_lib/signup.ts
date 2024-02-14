@@ -18,6 +18,7 @@ export default async function signup(prevState: any, formData: FormData) {
   if (!formData.get("image")) {
     return { message: "no_image" };
   }
+  formData.set("nickname", formData.get("name") as string);
   let shouldRedirect = false;
   try {
     const response = await fetch(

@@ -5,7 +5,6 @@ import hLogo from "@/../public/hlogo.png";
 import NavMenu from "./_component/NavMenu";
 import LogoutButton from "./_component/LogoutButton";
 import TrendSection from "./_component/TrendSection";
-import FollowRecommend from "./_component/FollowRecommend";
 import RightSearchZone from "./_component/RightSearchZone";
 import { auth } from "@/auth";
 import RQProvider from "./_component/RQProvider";
@@ -47,7 +46,7 @@ export default async function AfterLoginLayout({
                     </svg>
                   </Link>
                 </nav>
-                <LogoutButton />
+                <LogoutButton me={session} />
               </>
             )}
           </div>

@@ -35,7 +35,6 @@ export const {
         }
 
         const user = await authResponse.json();
-        console.log(user);
         return {
           email: user.id,
           name: user.nickname,

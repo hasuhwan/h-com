@@ -1,15 +1,13 @@
-import { Iuser } from "@/model/user";
-import { QueryFunction } from "@tanstack/react-query";
+import { cookies } from "next/headers";
 
-const getUser: QueryFunction<Iuser, [_1: string, string]> = async ({
-  queryKey,
-}) => {
+const getUserServer = async ({ queryKey }: { queryKey: [string, string] }) => {
   const [_1, username] = queryKey;
   const res = await fetch(`http://localhost:9090/api/users/${username}`, {
     next: {
       tags: ["users", username],
     },
     credentials: "include",
+    headers: { Cookie: cookies().toString() },
     cache: "no-store",
   });
   if (!res.ok) {
@@ -17,4 +15,4 @@ const getUser: QueryFunction<Iuser, [_1: string, string]> = async ({
   }
   return res.json();
 };
-export default getUser;
+export default getUserServer;

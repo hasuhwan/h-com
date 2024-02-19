@@ -7,6 +7,7 @@ import type { Iuser } from "@/model/user";
 import cx from "classnames";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { MouseEventHandler } from "react";
+import Link from "next/link";
 type Prop = {
   user: Iuser;
 };
@@ -43,6 +44,21 @@ export default function FollowRecommend({ user }: Prop) {
         };
         queryClient.setQueryData(["users", "followRecommends"], shallow);
       }
+      const value2: Iuser | undefined = queryClient.getQueryData([
+        "users",
+        userId,
+      ]);
+      if (value2) {
+        const shallow = {
+          ...value2,
+          Followers: [{ id: session?.user?.email as string }],
+          _count: {
+            ...value2._count,
+            Followers: value2._count?.Followers + 1,
+          },
+        };
+        queryClient.setQueryData(["users", userId], shallow);
+      }
     },
     onError(error, userId) {
       const value: Iuser[] | undefined = queryClient.getQueryData([
@@ -63,6 +79,23 @@ export default function FollowRecommend({ user }: Prop) {
           },
         };
         queryClient.setQueryData(["users", "followRecommends"], shallow);
+      }
+      const value2: Iuser | undefined = queryClient.getQueryData([
+        "users",
+        userId,
+      ]);
+      if (value2) {
+        const shallow = {
+          ...value2,
+          Followers: value2.Followers.filter(
+            (v) => v.id !== session?.user?.email
+          ),
+          _count: {
+            ...value2._count,
+            Followers: value2._count?.Followers - 1,
+          },
+        };
+        queryClient.setQueryData(["users", userId], shallow);
       }
     },
   });
@@ -96,6 +129,23 @@ export default function FollowRecommend({ user }: Prop) {
         };
         queryClient.setQueryData(["users", "followRecommends"], shallow);
       }
+      const value2: Iuser | undefined = queryClient.getQueryData([
+        "users",
+        userId,
+      ]);
+      if (value2) {
+        const shallow = {
+          ...value2,
+          Followers: value2.Followers.filter(
+            (v) => v.id !== session?.user?.email
+          ),
+          _count: {
+            ...value2._count,
+            Followers: value2._count?.Followers - 1,
+          },
+        };
+        queryClient.setQueryData(["users", userId], shallow);
+      }
     },
     onError(error, userId) {
       const value: Iuser[] | undefined = queryClient.getQueryData([
@@ -115,6 +165,21 @@ export default function FollowRecommend({ user }: Prop) {
         };
         queryClient.setQueryData(["users", "followRecommends"], shallow);
       }
+      const value2: Iuser | undefined = queryClient.getQueryData([
+        "users",
+        userId,
+      ]);
+      if (value2) {
+        const shallow = {
+          ...value2,
+          Followers: [{ id: session?.user?.email as string }],
+          _count: {
+            ...value2._count,
+            Followers: value2._count?.Followers + 1,
+          },
+        };
+        queryClient.setQueryData(["users", userId], shallow);
+      }
     },
   });
   const onFollow: MouseEventHandler<HTMLButtonElement> = (e) => {
@@ -131,7 +196,7 @@ export default function FollowRecommend({ user }: Prop) {
   };
 
   return (
-    <div className={styles.container}>
+    <Link href={`/${user.id}`} className={styles.container}>
       <div className={styles.userLogoSection}>
         <div className={styles.userLogo}>
           <Image src={user.image} alt={user.id} width={40} height={40} />
@@ -146,6 +211,6 @@ export default function FollowRecommend({ user }: Prop) {
       >
         <button onClick={onFollow}>{followed ? "팔로잉" : "팔로우"}</button>
       </div>
-    </div>
+    </Link>
   );
 }

@@ -1,10 +1,17 @@
-const getSinglePost = async ({ queryKey }: { queryKey: [string, string] }) => {
+import { cookies } from "next/headers";
+
+const getSinglePostServer = async ({
+  queryKey,
+}: {
+  queryKey: [string, string];
+}) => {
   const [_1, id] = queryKey;
   const res = await fetch(`http://localhost:9090/api/posts/${id}`, {
     next: {
       tags: ["posts", id],
     },
     credentials: "include",
+    headers: { Cookie: cookies().toString() },
     cache: "no-store",
   });
   if (!res.ok) {
@@ -12,4 +19,4 @@ const getSinglePost = async ({ queryKey }: { queryKey: [string, string] }) => {
   }
   return res.json();
 };
-export default getSinglePost;
+export default getSinglePostServer;

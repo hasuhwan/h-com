@@ -26,7 +26,7 @@ export default function PostForm({ me }: Props) {
   const [content, setContent] = useState("");
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: async (e: FormEvent) => {
+    mutationFn: (e: FormEvent) => {
       e.preventDefault();
       const formData = new FormData();
       formData.append("content", content);

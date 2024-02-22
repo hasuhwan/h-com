@@ -22,5 +22,7 @@ interface Ipost {
     Reposts: number;
     Comments: number;
   };
+  Parent?: Ipost;
+  Original?: Ipost;
 }
 export type { Ipost, IpostImage };

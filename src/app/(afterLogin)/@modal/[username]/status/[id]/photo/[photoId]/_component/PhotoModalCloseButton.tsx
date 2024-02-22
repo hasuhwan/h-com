@@ -1,12 +1,13 @@
 "use client";
 
 import style from "../photoModal.module.css";
-import React from "react";
+import React, { MouseEventHandler } from "react";
 import { useRouter } from "next/navigation";
 
 export default function PhotoModalCloseButton() {
   const router = useRouter();
-  const onClick = () => {
+  const onClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
     router.back(); // 뒤로가기
   };
   return (

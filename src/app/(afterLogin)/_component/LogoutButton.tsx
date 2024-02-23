@@ -21,6 +21,7 @@ export default function LogoutButton({ me }: Props) {
         method: "post",
         credentials: "include",
       });
+      router.refresh();
       router.replace("/");
     });
   };

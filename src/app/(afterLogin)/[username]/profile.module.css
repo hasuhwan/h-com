@@ -33,8 +33,8 @@
 .userRow {
   display: flex;
   flex-direction: row;
-  width: 100%;
   justify-content: space-between;
+  width: 100%;
   align-items: center;
 }
 
@@ -50,9 +50,12 @@
   align-items: center;
   margin-right: 12px;
   border-radius: 50%;
+  width: 134px;
+  height: 134px;
   border: 1px solid lightgray;
 }
 .userImage img {
+  width: 134px;
   border-radius: 50%;
 }
 .userName {
@@ -65,14 +68,6 @@
 }
 .userName > div:last-child {
   font-size: 15px;
-}
-.userError {
-  height: 100;
-  display: flex;
-  align-items: center;
-  font-size: 31px;
-  font-weight: bold;
-  justify-content: center;
 }
 .followButton {
   border: 1px solid rgb(207, 217, 222);
@@ -97,6 +92,22 @@
 }
 .followButton.followed:hover {
   background: lightgray;
+}
+.messageButton {
+  border: 1px solid rgb(207, 217, 222);
+  width: 34px;
+  border-radius: 17px;
+  height: 34px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  cursor: pointer;
+  margin-right: 8px;
+}
+.messageButton:hover {
+  background-color: rgb(15, 20, 25, 0.09);
 }
 .backButton {
   width: 34px;

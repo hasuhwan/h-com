@@ -29,11 +29,11 @@ export default async function signup(prevState: any, formData: FormData) {
         credentials: "include",
       }
     );
-    console.log(response.status);
+
     if (response.status === 403) {
       return { message: "user_exists" };
     }
-    console.log(await response.json());
+
     shouldRedirect = true;
     await signIn("credentials", {
       username: formData.get("id"),

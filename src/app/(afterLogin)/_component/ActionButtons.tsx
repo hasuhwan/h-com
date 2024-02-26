@@ -327,13 +327,12 @@ export default function ActionButtons({ white, post }: Props) {
     onSuccess() {
       const queryCache = queryClient.getQueryCache();
       const queryKeys = queryCache.getAll().map((cache) => cache.queryKey);
-      console.log("queryKeys", queryKeys);
+
       queryKeys.forEach((queryKey) => {
         if (queryKey[0] === "posts") {
           const value: Ipost | InfiniteData<Ipost[]> | undefined =
             queryClient.getQueryData(queryKey);
           if (value && "pages" in value) {
-            console.log("array", value);
             const obj = value.pages
               .flat()
               .find((v) => v.postId === post.postId);
@@ -351,7 +350,7 @@ export default function ActionButtons({ white, post }: Props) {
               const index = value.pages[pageIndex].findIndex(
                 (v) => v.postId === post.postId
               );
-              console.log("found index", index);
+
               const shallow = { ...value };
               value.pages = { ...value.pages };
               value.pages[pageIndex] = [...value.pages[pageIndex]];

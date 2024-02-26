@@ -1,27 +1,77 @@
 "use client";
 
-import { ChangeEventHandler, useState } from "react";
+import { ChangeEventHandler, useEffect, useState } from "react";
 import styles from "./messageForm.module.css";
 import TextareaAutosize from "react-textarea-autosize";
+import useSocket from "../_lib/useSocket";
+import { useSession } from "next-auth/react";
+import { InfiniteData, useQueryClient } from "@tanstack/react-query";
+import { Imessage } from "@/model/message";
+import useMessageStore from "@/store/messageModal";
 
 type Props = { id: string };
 
 export default function MessageForm({ id }: Props) {
   const [content, setContent] = useState("");
+  const [socket] = useSocket();
+  const { data: session } = useSession();
+  const queryClient = useQueryClient();
+  const { setGoDown } = useMessageStore();
 
   const onChangeContent: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
     setContent(e.target.value);
   };
+  const onSubmit = () => {
+    if (!session?.user?.email) {
+      return;
+    }
+    const ids = [session.user.email, id].sort().join("-");
+    socket?.emit("sendMessage", {
+      senderId: session.user.email,
+      receiverId: id,
+      content,
+    });
+    const prevMessages = queryClient.getQueryData([
+      "rooms",
+      { senderId: session.user.email, receiverId: id },
+      "messages",
+    ]) as InfiniteData<Imessage[]>;
+    if (prevMessages && typeof prevMessages === "object") {
+      const newMessages = { ...prevMessages, pages: [...prevMessages.pages] };
+      const lastPage = newMessages.pages.at(-1);
+      const lastMessageId = lastPage?.at(-1)?.messageId;
+      const newLastPage = lastPage ? [...lastPage] : [];
+      newLastPage.push({
+        senderId: session.user.email,
+        receiverId: id,
+        content,
+        messageId: lastMessageId ? lastMessageId + 1 : 1,
+        room: ids,
+        createdAt: new Date(),
+      });
+      newMessages.pages[newMessages.pages.length - 1] = newLastPage;
+      queryClient.setQueryData(
+        ["rooms", { senderId: session.user.email, receiverId: id }, "messages"],
+        newMessages
+      );
+      setGoDown(true);
+    }
+
+    setContent("");
+  };
+
   return (
     <div className={styles.formZone}>
       <form
         className={styles.form}
         onSubmit={(e) => {
           e.preventDefault();
+          onSubmit();
         }}
       >
         <TextareaAutosize
           onChange={onChangeContent}
+          value={content}
           placeholder="새 쪽지 작성하기"
         />
         <button

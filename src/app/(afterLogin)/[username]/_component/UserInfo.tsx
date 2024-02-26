@@ -34,7 +34,6 @@ export default function UserInfo({ username, session }: Props) {
   const queryClient = useQueryClient();
   const follow = useMutation({
     mutationFn: (userId: string) => {
-      console.log("follow", userId);
       return fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/users/${userId}/follow`,
         {
@@ -51,7 +50,6 @@ export default function UserInfo({ username, session }: Props) {
       if (value) {
         const index = value.findIndex((v) => v.id === userId);
         if (index > -1) {
-          console.log(value, userId, index);
           const shallow = [...value];
           shallow[index] = {
             ...shallow[index],
@@ -88,7 +86,6 @@ export default function UserInfo({ username, session }: Props) {
       ]);
       if (value) {
         const index = value.findIndex((v) => v.id === userId);
-        console.log(value, userId, index);
         if (index > -1) {
           const shallow = [...value];
           shallow[index] = {
@@ -125,7 +122,6 @@ export default function UserInfo({ username, session }: Props) {
   });
   const unfollow = useMutation({
     mutationFn: (userId: string) => {
-      console.log("unfollow", userId);
       return fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/users/${userId}/follow`,
         {
@@ -141,7 +137,6 @@ export default function UserInfo({ username, session }: Props) {
       ]);
       if (value) {
         const index = value.findIndex((v) => v.id === userId);
-        console.log(value, userId, index);
         if (index > -1) {
           const shallow = [...value];
           shallow[index] = {
@@ -183,7 +178,7 @@ export default function UserInfo({ username, session }: Props) {
       ]);
       if (value) {
         const index = value.findIndex((v) => v.id === userId);
-        console.log(value, userId, index);
+
         if (index > -1) {
           const shallow = [...value];
           shallow[index] = {

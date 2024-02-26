@@ -25,7 +25,7 @@ export default function UserInfo({ id }: Props) {
           <h2>{user.nickname}</h2>
         </div>
       </div>
-      <Link href={user.nickname} className={styles.userInfo}>
+      <Link href={"/" + user.id} className={styles.userInfo}>
         <img src={user.image} alt={user.id} />
         <div>
           <b>{user.nickname}</b>

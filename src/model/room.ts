@@ -2,7 +2,8 @@ import { Iuser } from "./user";
 
 interface Iroom {
   room: string;
-  Reciver: Iuser;
+  Receiver: Iuser;
+  Sender: Iuser;
   content: string;
   createdAt: Date;
 }

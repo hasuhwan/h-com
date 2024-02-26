@@ -105,7 +105,6 @@ export default function TweetModal() {
     },
     async onSuccess(response, variable) {
       const newPost = await response.json();
-      console.log(newPost);
       setContent("");
       setPreview([]);
       const queryCache = queryClient.getQueryCache();

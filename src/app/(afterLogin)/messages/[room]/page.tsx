@@ -1,8 +1,4 @@
-import { faker } from "@faker-js/faker";
 import styles from "./chatRoom.module.css";
-import Link from "next/link";
-import BackButton from "../../_component/BackButton";
-import cx from "classnames";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ko";
@@ -11,6 +7,8 @@ import { auth } from "@/auth";
 import { QueryClient } from "@tanstack/react-query";
 import getUserServer from "../../[username]/_lib/getUserServer";
 import MessageForm from "./_component/MessageForm";
+import WebSocketComponent from "./_component/WebSocketComponent";
+import MessageList from "./_component/MessageList";
 dayjs.locale("ko");
 dayjs.extend(relativeTime);
 
@@ -34,8 +32,9 @@ export default async function ChatRoom({ params }: Props) {
 
   return (
     <main className={styles.main}>
+      <WebSocketComponent />
       <UserInfo id={receiver} />
-
+      <MessageList id={receiver} />
       <MessageForm id={receiver} />
     </main>
   );

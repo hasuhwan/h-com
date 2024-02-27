@@ -1,6 +1,11 @@
 "use client";
 
-import { ChangeEventHandler, useEffect, useState } from "react";
+import {
+  ChangeEventHandler,
+  KeyboardEventHandler,
+  useEffect,
+  useState,
+} from "react";
 import styles from "./messageForm.module.css";
 import TextareaAutosize from "react-textarea-autosize";
 import useSocket from "../_lib/useSocket";
@@ -56,10 +61,23 @@ export default function MessageForm({ id }: Props) {
       );
       setGoDown(true);
     }
-
     setContent("");
   };
-
+  const onEnter: KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
+    if (e.nativeEvent.isComposing) {
+      return;
+    }
+    if (e.key === "Enter") {
+      if (e.shiftKey) {
+        return;
+      }
+      e.preventDefault();
+      if (!content?.trim()) {
+        return;
+      }
+      onSubmit();
+    }
+  };
   return (
     <div className={styles.formZone}>
       <form
@@ -71,6 +89,7 @@ export default function MessageForm({ id }: Props) {
       >
         <TextareaAutosize
           onChange={onChangeContent}
+          onKeyDown={onEnter}
           value={content}
           placeholder="새 쪽지 작성하기"
         />

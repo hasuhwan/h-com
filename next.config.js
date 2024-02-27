@@ -1,3 +1,6 @@
+const { createVanillaExtractPlugin } = require("@vanilla-extract/next-plugin");
+const withVanillaExtract = createVanillaExtractPlugin();
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   async rewrites() {
@@ -8,13 +11,6 @@ const nextConfig = {
       },
     ];
   },
-  images: {
-    remotePatterns: [
-      { protocol: "https", hostname: "cloudflare-ipfs.com" },
-      { protocol: "https", hostname: "avatars.githubusercontent.com" },
-      { protocol: "https", hostname: "loremflickr.com" },
-    ],
-  },
 };
 
-module.exports = nextConfig;
+module.exports = withVanillaExtract(nextConfig);

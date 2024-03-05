@@ -2,25 +2,147 @@
 
 import Image from "next/image";
 import styles from "./commentForm.module.css";
-import { useState, useRef } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import {
+  useState,
+  useRef,
+  ChangeEventHandler,
+  useCallback,
+  FormEventHandler,
+  FormEvent,
+} from "react";
+import {
+  InfiniteData,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
+import TextareaAutosize from "react-textarea-autosize";
+import { Ipost } from "@/model/post";
 type Props = {
   id: string;
 };
 export default function CommentForm({ id }: Props) {
   const [content, setContent] = useState("");
   const imageRef = useRef<HTMLInputElement>(null);
+  const { data: me } = useSession();
+  const queryClient = useQueryClient();
+  const [preview, setPreview] = useState<
+    Array<{ dataUrl: string; file: File } | null>
+  >([]);
+
+  const comment = useMutation({
+    mutationFn: (e: FormEvent) => {
+      e.preventDefault();
+      const formData = new FormData();
+      formData.append("content", content);
+      preview.forEach((p) => {
+        p && formData.append("images", p.file);
+      });
+      return fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${id}/comments`,
+        {
+          method: "post",
+          credentials: "include",
+          body: formData,
+        }
+      );
+    },
+    async onSuccess(response, variable) {
+      const newPost = await response.json();
+      setContent("");
+      setPreview([]);
+      const queryCache = queryClient.getQueryCache();
+      const queryKeys = queryCache.getAll().map((cache) => cache.queryKey);
+
+      queryKeys.forEach((queryKey) => {
+        if (queryKey[0] === "posts") {
+          const value: Ipost | InfiniteData<Ipost[]> | undefined =
+            queryClient.getQueryData(queryKey);
+          if (value && "pages" in value) {
+            const obj = value.pages.flat().find((v) => v.postId === Number(id));
+            if (obj) {
+              const pageIndex = value.pages.findIndex((page) =>
+                page.includes(obj)
+              );
+              const index = value.pages[pageIndex].findIndex(
+                (v) => v.postId === Number(id)
+              );
+              const shallow = { ...value };
+              value.pages = { ...value.pages };
+              value.pages[pageIndex] = [...value.pages[pageIndex]];
+              shallow.pages[pageIndex][index] = {
+                ...shallow.pages[pageIndex][index],
+                Comments: [{ userId: me?.user?.email as string }],
+                _count: {
+                  ...shallow.pages[pageIndex][index]._count,
+                  Comments: shallow.pages[pageIndex][index]._count.Comments + 1,
+                },
+              };
+              shallow.pages[0].unshift(newPost);
+              queryClient.setQueryData(queryKey, shallow);
+            }
+          } else if (value) {
+            if (value.postId === Number(id)) {
+              const shallow = {
+                ...value,
+                Comments: [{ userId: me?.user?.email as string }],
+                _count: {
+                  ...value._count,
+                  Comments: value._count.Comments + 1,
+                },
+              };
+              queryClient.setQueryData(queryKey, shallow);
+            }
+          }
+        }
+      });
+      await queryClient.invalidateQueries({
+        queryKey: ["posts", id],
+      });
+    },
+  });
+
   const onClickButton = () => {
     imageRef.current?.click();
   };
-  const onSubmit = () => {};
-  const onChange = () => {};
-
-  const { data: me } = useSession();
-  const queryClient = useQueryClient();
+  const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+    comment.mutate(e);
+  };
+  const onChange: ChangeEventHandler<HTMLTextAreaElement> = useCallback(
+    (e) => {
+      setContent(e.target.value);
+    },
+    [content]
+  );
+  const onUpload: ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
+    e.preventDefault();
+    const files = e.target.files;
+    if (files) {
+      Array.from(files).forEach((file, idx) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setPreview((prevPreview) => {
+            const prev = [...prevPreview];
+            prev[idx] = { dataUrl: reader.result as string, file: file };
+            return prev;
+          });
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  }, []);
+  const onRemoveImage = useCallback((index: number) => {
+    setPreview((prevPreview) => {
+      const prev = [...prevPreview];
+      prev[index] = null;
+      return prev;
+    });
+  }, []);
   const post = queryClient.getQueryData(["posts", id]);
   if (!post) {
+    return null;
+  }
+  if (!me?.user) {
     return null;
   }
   return (
@@ -36,11 +158,36 @@ export default function CommentForm({ id }: Props) {
         </div>
       </div>
       <div className={styles.postInputSection}>
-        <textarea
+        <TextareaAutosize
           value={content}
           onChange={onChange}
           placeholder="답글 게시하기"
+          className={styles.input}
         />
+        <div style={{ display: "flex" }}>
+          {preview.map(
+            (v, idx) =>
+              v && (
+                <div
+                  key={idx}
+                  onClick={() => {
+                    onRemoveImage(idx);
+                  }}
+                  className={styles.previewImageContainer}
+                >
+                  <Image
+                    src={v.dataUrl}
+                    alt="미리보기"
+                    style={{
+                      objectFit: "contain",
+                      maxHeight: "100px",
+                    }}
+                    fill={true}
+                  />
+                </div>
+              )
+          )}
+        </div>
         <div className={styles.postButtonSection}>
           <div className={styles.footerButtons}>
             <div className={styles.footerButtonLeft}>
@@ -50,6 +197,7 @@ export default function CommentForm({ id }: Props) {
                 multiple
                 hidden
                 ref={imageRef}
+                onChange={onUpload}
               />
               <button
                 className={styles.uploadButton}

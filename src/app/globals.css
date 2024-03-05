@@ -99,3 +99,7 @@ a {
     color-scheme: dark;
   }
 }
+.swiper {
+  width: 100%;
+  height: 100%;
+}

@@ -2,7 +2,6 @@
 
 import {
   ChangeEventHandler,
-  FormEventHandler,
   useRef,
   useState,
   useCallback,
@@ -114,7 +113,7 @@ export default function PostForm({ me }: Props) {
       <div className={styles.postUserSection}>
         <div className={styles.postUserImage}>
           <Image
-            src={me?.user?.image as string}
+            src={(me?.user?.image as string) || ""}
             alt={(me?.user?.email as string) || "기본 이미지"}
             width={40}
             height={40}
@@ -138,14 +137,14 @@ export default function PostForm({ me }: Props) {
                   }}
                   className={styles.previewImageContainer}
                 >
-                  <img
+                  <Image
                     src={v.dataUrl}
                     alt="미리보기"
                     style={{
-                      width: "100%",
                       objectFit: "contain",
                       maxHeight: "100px",
                     }}
+                    fill={true}
                   />
                 </div>
               )

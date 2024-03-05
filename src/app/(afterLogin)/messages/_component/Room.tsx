@@ -27,7 +27,7 @@ export default function Room({ room }: Props) {
   return (
     <div className={styles.room} onClickCapture={onClick}>
       <div className={styles.roomUserImage}>
-        <Image src={user.image} alt="" width={40} height={40} />
+        <Image src={user.image} alt={user.image} width={40} height={40} />
       </div>
       <div className={styles.roomChatInfo}>
         <div className={styles.roomUserInfo}>

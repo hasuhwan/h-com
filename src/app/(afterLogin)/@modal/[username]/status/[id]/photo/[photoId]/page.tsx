@@ -14,11 +14,14 @@ import Comments from "@/app/(afterLogin)/[username]/status/[id]/_component/Comme
 import ImageZone from "./_component/ImageZone";
 type Props = {
   params: {
+    username: string;
     id: string;
+    photoId: string;
   };
 };
 export default async function PhotoModal({ params }: Props) {
-  const { id } = params;
+  const { id, photoId, username } = params;
+
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
     queryKey: ["posts", id],
@@ -33,7 +36,7 @@ export default async function PhotoModal({ params }: Props) {
     <div className={styles.container}>
       <HydrationBoundary state={dehydratedState}>
         <PhotoModalCloseButton />
-        <ImageZone id={id} />
+        <ImageZone id={id} photoId={photoId} username={username} />
         <div className={styles.commentZone}>
           <SinglePosts noImage id={id} />
           <CommentForm id={id} />

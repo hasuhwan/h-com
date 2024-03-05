@@ -83,7 +83,13 @@
   background-color: rgb(26, 140, 216);
 }
 .previewImageContainer {
+  width: 100%;
   flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100px;
+  position: relative;
 }
 .previewImageContainer:hover {
   opacity: 0.8;

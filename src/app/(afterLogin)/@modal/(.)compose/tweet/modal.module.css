@@ -143,3 +143,6 @@
 .actionButton:disabled {
   opacity: 0.5;
 }
+.previewImageContainer {
+  flex: 1;
+}

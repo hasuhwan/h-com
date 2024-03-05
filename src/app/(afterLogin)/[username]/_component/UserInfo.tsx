@@ -10,7 +10,6 @@ import getUser from "../_lib/getUser";
 import { MouseEventHandler } from "react";
 import { useRouter } from "next/navigation";
 import { Session } from "@auth/core/types";
-import e from "express";
 type Props = {
   username: string;
   session: Session | null;

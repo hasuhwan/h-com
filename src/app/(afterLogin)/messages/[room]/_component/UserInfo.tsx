@@ -5,6 +5,7 @@ import BackButton from "@/app/(afterLogin)/_component/BackButton";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import styles from "./../chatRoom.module.css";
+import Image from "next/image";
 
 type Props = { id: string };
 
@@ -26,7 +27,7 @@ export default function UserInfo({ id }: Props) {
         </div>
       </div>
       <Link href={"/" + user.id} className={styles.userInfo}>
-        <img src={user.image} alt={user.id} />
+        <Image src={user.image} alt={user.id} width={40} height={40} />
         <div>
           <b>{user.nickname}</b>
         </div>

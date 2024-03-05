@@ -92,14 +92,19 @@
   border-radius: 16px;
 }
 .postImageSection.oneImage {
-  max-height: 510px;
+  position: relative;
+  width: 100%;
   background-repeat: no-repeat;
+  border-radius: 16px;
 }
-.postImageSection img {
+.postImageSection.oneImage img {
+  position: relative !important;
+  height: unset !important;
   border-radius: 16px;
   max-height: 510px;
-  width: 100%;
+  object-fit: contain;
 }
+
 .postImageSection.twoImage {
   height: 272px;
   display: flex;

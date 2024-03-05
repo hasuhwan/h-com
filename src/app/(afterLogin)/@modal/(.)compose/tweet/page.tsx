@@ -207,7 +207,7 @@ export default function TweetModal() {
   const onClickClose = useCallback(() => {
     modalStore.reset();
     router.back();
-  }, []);
+  }, [modalStore, router]);
 
   const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     if (modalStore.mode === "new") {
@@ -236,7 +236,12 @@ export default function TweetModal() {
             <div className={styles.modalOriginal}>
               <div className={styles.postUserSection}>
                 <div className={styles.postUserImage}>
-                  <img src={parent.User.image} alt={parent.User.id} />
+                  <Image
+                    src={parent.User.image}
+                    alt={parent.User.id}
+                    width={40}
+                    height={40}
+                  />
                 </div>
               </div>
               <div>
@@ -257,8 +262,8 @@ export default function TweetModal() {
             <div className={styles.postUserSection}>
               <div className={styles.postUserImage}>
                 <Image
-                  src={me?.user?.image as string}
-                  alt={me?.user?.email as string}
+                  src={(me?.user?.image as string) || "오류"}
+                  alt={(me?.user?.email as string) || "오류"}
                   width={40}
                   height={40}
                 />
@@ -286,7 +291,7 @@ export default function TweetModal() {
                         }}
                         className={styles.previewImageContainer}
                       >
-                        <img
+                        <Image
                           src={v.dataUrl}
                           alt="미리보기"
                           style={{
@@ -294,6 +299,7 @@ export default function TweetModal() {
                             objectFit: "contain",
                             maxHeight: "100px",
                           }}
+                          fill={true}
                         />
                       </div>
                     )

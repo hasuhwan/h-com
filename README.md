@@ -1,36 +1,27 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+제로초님의 강의를 참고하여 [x.com](https://x.com)클로닝 프로젝트
+강의와 별개로 추가 요소 존재
 
-## Getting Started
-
-First, run the development server:
+## 시작하기
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+[Zerocho server part](https://github.com/zerocho/nest-prisma) 클론 및 참고하여 연동 db설정 필요
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 주요 기능
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- 로그인, 로그아웃, 회원가입
+- 사용자간 라이브 채팅
+- 게시글 업로드
+- 기존 게시글 재게시
+- 답글 작성
+- 팔로잉
+- 해시태그 별 검색가능
 
-## Learn More
+## 추가 기능
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- 게시글 이미지 Swiper 라이브러리 사용으로 네비게이션 슬라이드 구현
+- 반응형으로 x.com과 비슷하게 구현
+- 많은 게시글이 표시 되어야하는 경우 Infinity Scroll 구현
